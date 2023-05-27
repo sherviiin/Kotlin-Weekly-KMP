@@ -1,14 +1,14 @@
 package com.github.sherviiin.kotlinweeklykmp.kw
 
-import io.ktor.client.HttpClient
-
 class Parser {
+
+    val regexPattern =
+        """<br>\n<a\shref=\"(.*?)\".*>(.*)<\/span><\/strong>.*\n.*>(.*?)<\/span><br>""".toRegex()
 
     fun parse(input: String): List<Article> {
 
-        val regexPattern =
-            """<br>\n<a\shref=\"(.*?)\".*>(.*)<\/span><\/strong>.*\n.*>(.*?)<\/span><br>""".toRegex()
         val matchResult = regexPattern.findAll(input)
+
         return matchResult.mapNotNull {
             if (it.groupValues.size < 4) {
                 return@mapNotNull null
@@ -22,4 +22,8 @@ class Parser {
     }
 }
 
-data class Article(val link: String, val title: String, val description: String)
+data class Article(
+    val link: String,
+    val title: String,
+    val description: String
+)
